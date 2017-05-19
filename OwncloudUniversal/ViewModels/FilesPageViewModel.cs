@@ -205,11 +205,13 @@ namespace OwncloudUniversal.ViewModels
             var result = await dialog.ShowAsync();
             if (result == ContentDialogResult.Primary)
             {
-                IndicatorService.GetDefault().ShowBar();
-                await WebDavItemService.GetDefault().DeleteItemAsync(items.Cast<DavItem>().ToList());
+                var indicator = new IndicatorService();
+                indicator.ShowBar();
+                var itemService = new WebDavItemService();
+                await itemService.DeleteItemAsync(items.Cast<DavItem>().ToList());
                 SelectionMode = ListViewSelectionMode.Single;
                 await WebDavNavigationService.ReloadAsync();
-                IndicatorService.GetDefault().HideBar();
+                indicator.HideBar();
             }
             
         }
@@ -232,10 +234,12 @@ namespace OwncloudUniversal.ViewModels
             {
                 if (string.IsNullOrWhiteSpace(box.Text))
                     return;
-                IndicatorService.GetDefault().ShowBar();
-                await WebDavItemService.GetDefault().CreateFolder(WebDavNavigationService.CurrentItem, box.Text);
+                var indicator = new IndicatorService();
+                indicator.ShowBar();
+                var itemService = new WebDavItemService();
+                await itemService.CreateFolder(WebDavNavigationService.CurrentItem, box.Text);
                 await WebDavNavigationService.ReloadAsync();
-                IndicatorService.GetDefault().HideBar();
+                indicator.HideBar();
             }
         }
 
@@ -282,10 +286,12 @@ namespace OwncloudUniversal.ViewModels
             {
                 if(string.IsNullOrWhiteSpace(box.Text))
                     return;
-                IndicatorService.GetDefault().ShowBar();
-                await WebDavItemService.GetDefault().Rename(item, box.Text);
+                var indicator = new IndicatorService();
+                indicator.ShowBar();
+                var itemService = new WebDavItemService();
+                await itemService.Rename(item, box.Text);
                 await WebDavNavigationService.ReloadAsync();
-                IndicatorService.GetDefault().HideBar();
+                indicator.HideBar();
             }
         }
     }

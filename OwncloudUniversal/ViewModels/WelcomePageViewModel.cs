@@ -105,7 +105,8 @@ namespace OwncloudUniversal.ViewModels
 
         private async Task Connect()
         {
-            IndicatorService.GetDefault().ShowBar();
+            var indicator = new IndicatorService();
+            indicator.ShowBar();
             try
             {
                 await CheckServerStatus();
@@ -151,7 +152,7 @@ namespace OwncloudUniversal.ViewModels
                     await dialog.ShowAsync();
                 }
             }
-            IndicatorService.GetDefault().HideBar();
+            indicator.HideBar();
         }
     }
 }

@@ -12,15 +12,6 @@ namespace OwncloudUniversal.Services
 {
     public class IndicatorService
     {
-        private static IndicatorService _instance;
-
-        private IndicatorService() { }
-
-        public static IndicatorService GetDefault()
-        {
-            return _instance ?? (_instance = new IndicatorService());
-        }
-
         public void ShowBar()
         {
             Shell.Ring.IsModal = true;

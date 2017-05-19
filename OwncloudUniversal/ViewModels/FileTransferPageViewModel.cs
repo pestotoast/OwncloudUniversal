@@ -92,7 +92,9 @@ namespace OwncloudUniversal.ViewModels
 
         private void StartUpload(List<StorageFile> files, DavItem uploadFolder)
         {
-            OperationsList = WebDavItemService.GetDefault().CreateUpload(uploadFolder, files).Cast<IBackgroundTransferOperation>().ToObservableCollection();
+            var service = new WebDavItemService();
+
+            OperationsList = service.CreateUpload(uploadFolder, files).Cast<IBackgroundTransferOperation>().ToObservableCollection();
             if (OperationsList.Count > 0)
             {
                 Progress<UploadOperation> progressCallback = new Progress<UploadOperation>(OnUploadProgressChanged);
@@ -129,7 +131,8 @@ namespace OwncloudUniversal.ViewModels
 
         private async Task StartDownload(StorageFolder folder, List<BaseItem> filesToUpload)
         {
-            OperationsList = (await WebDavItemService.GetDefault().CreateDownloadAsync(filesToUpload, folder)).Cast<IBackgroundTransferOperation>().ToObservableCollection();
+            var service = new WebDavItemService();
+            OperationsList = (await service.CreateDownloadAsync(filesToUpload, folder)).Cast<IBackgroundTransferOperation>().ToObservableCollection();
 
             Progress<DownloadOperation> progressCallback = new Progress<DownloadOperation>(OnDownloadProgressChanged);
             var task = ((DownloadOperation)OperationsList.First()).StartAsync().AsTask(_token.Token, progressCallback);

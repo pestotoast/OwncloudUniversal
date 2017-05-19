@@ -55,7 +55,8 @@ namespace OwncloudUniversal.Services
                     dia.Content = App.ResourceLoader.GetString("ForbiddenErrorMessage");
             }
             await LogHelper.Write($"{e.Exception.GetType()}: {e.Message} \r\n{exception.StackTrace}");
-            IndicatorService.GetDefault().HideBar();
+            var indicator = new IndicatorService();
+            indicator.HideBar();
             await dia.ShowAsync();
         }
     }

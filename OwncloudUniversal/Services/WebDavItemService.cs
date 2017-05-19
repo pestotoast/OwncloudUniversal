@@ -21,16 +21,6 @@ namespace OwncloudUniversal.Services
 {
     class WebDavItemService
     {
-        private static WebDavItemService _instance;
-        private WebDavItemService()
-        {
-        }
-
-        public static WebDavItemService GetDefault()
-        {
-            return _instance ?? (_instance = new WebDavItemService());
-        }
-
         public async Task<List<DavItem>> GetItemsAsync(Uri folderHref)
         {
             var client = new WebDavClient(new Uri(Configuration.ServerUrl, UriKind.RelativeOrAbsolute), Configuration.Credential);

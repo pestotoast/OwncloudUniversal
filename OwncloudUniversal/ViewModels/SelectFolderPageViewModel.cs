@@ -85,11 +85,12 @@ namespace OwncloudUniversal.ViewModels
 
         private async Task Move()
         {
+            var service = new WebDavItemService();
             try
             {
                 foreach (var davItem in _itemsToMove)
                 {
-                    await WebDavItemService.GetDefault().MoveToFolder(davItem, WebDavNavigationService.CurrentItem);
+                    await service.MoveToFolder(davItem, WebDavNavigationService.CurrentItem);
                 }
             }
             finally
@@ -133,10 +134,12 @@ namespace OwncloudUniversal.ViewModels
             var result = await dialog.ShowAsync();
             if (result == ContentDialogResult.Primary)
             {
-                IndicatorService.GetDefault().ShowBar();
-                await WebDavItemService.GetDefault().CreateFolder(WebDavNavigationService.CurrentItem, box.Text);
+                var indicator = new IndicatorService();
+                indicator.ShowBar();
+                var itemService = new WebDavItemService();
+                await itemService.CreateFolder(WebDavNavigationService.CurrentItem, box.Text);
                 await WebDavNavigationService.ReloadAsync();
-                IndicatorService.GetDefault().HideBar();
+                indicator.HideBar();
             }
         }
     }

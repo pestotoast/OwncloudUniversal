@@ -30,7 +30,7 @@ namespace OwncloudUniversal.Services
 
         private WebDavNavigationService()
         {
-            _itemService = WebDavItemService.GetDefault();
+            _itemService = new WebDavItemService();
             BackStack = new ObservableCollection<DavItem>();
             ForwardStack = new ObservableCollection<DavItem>();
             Items = new ObservableCollection<DavItem>();
@@ -43,6 +43,12 @@ namespace OwncloudUniversal.Services
             var item = new DavItem { Href = Configuration.ServerUrl, IsCollection = true };
             await _instance.NavigateAsync(item);
             return _instance;
+        }
+
+        public static async Task ResetAsync()
+        {
+            _instance = null;
+            await InintializeAsync();
         }
 
         public void SetNavigationService(INavigationService service)
@@ -187,11 +193,12 @@ namespace OwncloudUniversal.Services
 
         public async Task ReloadAsync()
         {
-            IndicatorService.GetDefault().ShowBar();
+             var service = new IndicatorService();
+            service.ShowBar();
             Items.Clear();
             Items.AddRange(await _itemService.GetItemsAsync(new Uri(CurrentItem.EntityId, UriKind.RelativeOrAbsolute)));
             OnPropertyChanged("Items");
-            IndicatorService.GetDefault().HideBar();
+            service.HideBar();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

@@ -15,7 +15,6 @@ namespace OwncloudUniversal.Shared.Model
     /// </summary>
     public abstract class AbstractAdapter
     {
-        private bool isBackgroundSync;
         /// <summary>
         /// Initializes a new Adapter
         /// </summary>

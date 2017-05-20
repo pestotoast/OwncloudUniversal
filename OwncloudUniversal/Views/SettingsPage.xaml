@@ -50,13 +50,13 @@
                RelativePanel.Below="pageHeader">
 
             <!--  settings  -->
-            <PivotItem DataContext="{Binding SettingsPartViewModel}" x:Uid="Connection">
+            <PivotItem x:Uid="Connection">
                 <ScrollViewer Margin="0,12,-12,0"
                               HorizontalContentAlignment="Stretch"
                               VerticalScrollBarVisibility="Auto">
                     <RelativePanel HorizontalAlignment="Left">
 
-                        <TextBox x:Name="ServerUrlTextBox" 
+                        <!--<TextBox x:Name="ServerUrlTextBox" 
                                  x:Uid="WebDavUrl" 
                                  Text="{Binding ServerUrl, Mode=TwoWay}"
                                  Margin="0,0,0,12"
@@ -78,13 +78,13 @@
                                  Margin="0,0,0,12"
                                      Password="{Binding Password, Mode=TwoWay}"
                                      RelativePanel.AlignLeftWithPanel="True"
-                                     RelativePanel.Below="UserNameTextBox" />
+                                     RelativePanel.Below="UserNameTextBox" />-->
 
                         <ToggleSwitch x:Name="BackgroundTaskEnabledToogleSwitch"
                                       x:Uid="EnableBackgroundTask"
                                       IsOn="{Binding BackgroundTaskEnabled, Mode=TwoWay}"
                                       RelativePanel.AlignLeftWithPanel="True"
-                                      RelativePanel.Below="PasswordBox" />
+                                       />
 
                         <ToggleSwitch x:Name="UseLightThemeToggleSwitch"
                                       x:Uid="RequestedApplicationTheme"
@@ -99,11 +99,19 @@
                                  RelativePanel.Below="UseLightThemeToggleSwitch"
                                  InputScope="Number"/>
                         
+                        <Button x:Name="ManageAccountsButton"
+                                x:Uid="ManageAccounts"
+                                Content="Manage Accounts"
+                                RelativePanel.AlignLeftWithPanel="True"
+                                RelativePanel.Below="MaxDownloadSizeBox"
+                                Command="{Binding ManageAccountsCommand}"/>
+                        
+                        
                         <Button x:Name="ResetButton"
                                 Margin="0,12"
                                 x:Uid="ResetDatabase"
                                 RelativePanel.AlignLeftWithPanel="True"
-                                RelativePanel.Below="MaxDownloadSizeBox"
+                                RelativePanel.Below="ManageAccountsButton"
                                 Command="{Binding ResetCommand}"/>
 
                     </RelativePanel>
@@ -113,7 +121,7 @@
 
             <!--  about  -->
             <PivotItem x:Uid="About">
-                <RelativePanel DataContext="{Binding AboutPartViewModel}">
+                <RelativePanel>
 
                     <Border x:Name="LogoImage"
                             HorizontalAlignment="Right"

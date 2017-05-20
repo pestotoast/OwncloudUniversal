@@ -133,6 +133,7 @@
     <Compile Include="Converters\ProgressToPercentConverter.cs" />
     <Compile Include="Converters\ProgressToTotalConverter.cs" />
     <Compile Include="Converters\ProgressToVisibilityConverter.cs" />
+    <Compile Include="Converters\ServerUrlToDisplayNameConverter.cs" />
     <Compile Include="Converters\UriToNicePathConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ExceptionHandlerService.cs" />
@@ -148,9 +149,11 @@
     <Compile Include="ViewModels\DetailsPageViewModel.cs" />
     <Compile Include="ViewModels\FileTransferPageViewModel.cs" />
     <Compile Include="ViewModels\FilesPageViewModel.cs" />
+    <Compile Include="ViewModels\ManageAccountsPageViewModel.cs" />
     <Compile Include="ViewModels\PhotoPageViewModel.cs" />
     <Compile Include="ViewModels\SelectFolderPageViewModel.cs" />
     <Compile Include="ViewModels\SettingsPageViewModel.cs" />
+    <Compile Include="ViewModels\ShellPageViewModel.cs" />
     <Compile Include="ViewModels\SyncedFolderConfigurationPageViewModel.cs" />
     <Compile Include="ViewModels\SyncedFoldersPageViewModel.cs" />
     <Compile Include="ViewModels\SynchronizationPageViewModel.cs" />
@@ -163,6 +166,9 @@
     </Compile>
     <Compile Include="Views\FilesPage.xaml.cs">
       <DependentUpon>FilesPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ManageAccountsPage.xaml.cs">
+      <DependentUpon>ManageAccountsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\PhotoPage.xaml.cs">
       <DependentUpon>PhotoPage.xaml</DependentUpon>
@@ -311,6 +317,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\FilesPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ManageAccountsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

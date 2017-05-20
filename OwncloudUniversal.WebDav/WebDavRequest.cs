@@ -48,6 +48,11 @@ namespace OwncloudUniversal.WebDav
             _contentStream = contentStream;
             _customHeaders = customHeaders;
             var filter = new HttpBaseProtocolFilter {AllowUI = false};
+            var cookies = filter.CookieManager.GetCookies(requestUrl);
+            foreach (var cookie in cookies)
+            {
+                Debug.WriteLine(cookie.Name + "  " + cookie.Value);
+            }
             _httpClient = new HttpClient(filter);
         }
 

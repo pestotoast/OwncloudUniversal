@@ -45,10 +45,13 @@ namespace OwncloudUniversal.Services
             return _instance;
         }
 
-        public static async Task ResetAsync()
+        public static void Reset()
         {
-            _instance = null;
-            await InintializeAsync();
+            if (_instance != null)
+            {
+                _instance.Items = new List<DavItem>().ToObservableCollection();
+                _instance = null;
+            }
         }
 
         public void SetNavigationService(INavigationService service)

@@ -1,0 +1,43 @@
+﻿<Page
+    x:Class="OwncloudUniversal.Views.ManageAccountsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:OwncloudUniversal.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="using:OwncloudUniversal.ViewModels"
+    xmlns:controls="using:Template10.Controls"
+    mc:Ignorable="d">
+
+    <Page.DataContext>
+        <vm:ManageAccountsPageViewModel x:Name="ViewModel"/>
+    </Page.DataContext>
+    
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <controls:PageHeader Content="Manage Accounts"
+                             x:Uid="ManageAccountsPageHeader"
+                             Frame="{x:Bind Frame}"
+                             Grid.Row="0"/>
+        <ListView ItemsSource="{x:Bind ViewModel.Credentials}" Grid.Row="1">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding UserName}"/>
+                            <TextBlock Text="@"/>
+                            <TextBlock Text="{Binding Resource, Converter={StaticResource ServerUrlToDisplayNameConverter}}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <CommandBar Grid.Row="2">
+            <AppBarButton Icon="Add" Command="{x:Bind ViewModel.AddAccountCommand}"/>
+        </CommandBar>
+    </Grid>
+</Page>

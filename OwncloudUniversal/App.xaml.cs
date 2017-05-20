@@ -64,7 +64,7 @@ namespace OwncloudUniversal
             };
         }
 
-        public override Task OnStartAsync(StartKind startKind, IActivatedEventArgs args)
+        public override async Task OnStartAsync(StartKind startKind, IActivatedEventArgs args)
         {
             // TODO: add your long-running task here
             SQLiteClient.Init();
@@ -73,22 +73,21 @@ namespace OwncloudUniversal
             {
                 if (Configuration.IsFirstRun)
                 {
-                    Configuration.RemoveCredentials();
+                    //Configg.reset
                     Configuration.IsBackgroundTaskEnabled = false;
-                    Shell.WelcomeDialog.IsModal = true;
+                    await NavigationService.NavigateAsync(typeof(WelcomePage));
                 }
                 else
                 {
-                    var task = NavigationService.NavigateAsync(typeof(FilesPage));
+                    await NavigationService.NavigateAsync(typeof(FilesPage));
                 }
 
                 if (Configuration.IsBackgroundTaskEnabled)
                 {
                     var settings = new SettingsPageViewModel();
-                    settings.SettingsPartViewModel.BackgroundTaskEnabled = true;
+                    settings.BackgroundTaskEnabled = true;
                 }
             }
-            return Task.CompletedTask;
         }
     }
 }

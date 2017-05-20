@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -23,8 +24,12 @@ namespace OwncloudUniversal.Services
     {
         public async Task<List<DavItem>> GetItemsAsync(Uri folderHref)
         {
-            var client = new WebDavClient(new Uri(Configuration.ServerUrl, UriKind.RelativeOrAbsolute), Configuration.Credential);
+            var client = new WebDavClient(new Uri(Configuration.ServerUrl, UriKind.RelativeOrAbsolute), new NetworkCredential(Configuration.UserName, Configuration.Password));
             var result = await client.ListFolder(CreateItemUri(folderHref));
+            foreach (var davItem in result)
+            {
+                Debug.WriteLine(davItem.DisplayName);
+            }
             if (result.Count > 0) result.RemoveAt(0);
             return result.OrderBy(x => !x.IsCollection).ThenBy(x => x.DisplayName, StringComparer.CurrentCultureIgnoreCase).ToList();
         }

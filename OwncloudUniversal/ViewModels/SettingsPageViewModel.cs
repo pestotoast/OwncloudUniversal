@@ -14,6 +14,7 @@ using OwncloudUniversal.Shared;
 using OwncloudUniversal.Shared.SQLite;
 using OwncloudUniversal.Shared.Synchronisation;
 using OwncloudUniversal.Utils;
+using OwncloudUniversal.Views;
 using Template10.Common;
 using SettingsService = OwncloudUniversal.Services.SettingsServices.SettingsService;
 
@@ -21,18 +22,13 @@ namespace OwncloudUniversal.ViewModels
 {
     public class SettingsPageViewModel : ViewModelBase
     {
-        public SettingsPartViewModel SettingsPartViewModel { get; } = new SettingsPartViewModel();
-        public AboutPartViewModel AboutPartViewModel { get; } = new AboutPartViewModel();
-    }
-
-    public class SettingsPartViewModel : ViewModelBase
-    {
         Services.SettingsServices.SettingsService _settings;
         BackgroundTaskConfiguration _taskConfig = new BackgroundTaskConfiguration();
 
         public ICommand ResetCommand { get; }
+        public ICommand ManageAccountsCommand { get; }
 
-        public SettingsPartViewModel()
+        public SettingsPageViewModel()
         {
             if (Windows.ApplicationModel.DesignMode.DesignModeEnabled)
             {
@@ -44,6 +40,7 @@ namespace OwncloudUniversal.ViewModels
             }
 
             ResetCommand = new DelegateCommand(async () => await ResetDataBaseAsync());
+            ManageAccountsCommand = new DelegateCommand(async () => await NavigationService.NavigateAsync(typeof(ManageAccountsPage)));
         }
 
         public bool ShowHamburgerButton
@@ -80,23 +77,23 @@ namespace OwncloudUniversal.ViewModels
             }
         }
 
-        public string ServerUrl
-        {
-            get { return Configuration.ServerUrl; }
-            set { Configuration.ServerUrl = value; }
-        }
+        //public string ServerUrl
+        //{
+        //    get { return Configuration.ServerUrl; }
+        //    set { Configuration.ServerUrl = value; }
+        //}
 
-        public string UserName
-        {
-            get { return Configuration.UserName; }
-            set { Configuration.UserName = value; }
-        }
+        //public string UserName
+        //{
+        //    get { return Configuration.UserName; }
+        //    set { Configuration.UserName = value; }
+        //}
 
-        public string Password
-        {
-            get { return Configuration.Password; }
-            set { Configuration.Password = value; }
-        }
+        //public string Password
+        //{
+        //    get { return Configuration.Password; }
+        //    set { Configuration.Password = value; }
+        //}
 
         private async Task ResetDataBaseAsync()
         {
@@ -131,10 +128,7 @@ namespace OwncloudUniversal.ViewModels
             get { return Configuration.MaxDownloadSize; }
             set { Configuration.MaxDownloadSize = value; }
         }
-    }
 
-    public class AboutPartViewModel : ViewModelBase
-    {
         public Uri Logo => Windows.ApplicationModel.Package.Current.Logo;
 
         public string DisplayName => Windows.ApplicationModel.Package.Current.DisplayName;

@@ -5,9 +5,11 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Windows.Security.Credentials;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Navigation;
 using OwncloudUniversal.Services;
 using OwncloudUniversal.Shared;
 using OwncloudUniversal.Views;
@@ -27,11 +29,21 @@ namespace OwncloudUniversal.ViewModels
         private string _password;
         private string _userName;
         private ServerStatus _status;
+        private PasswordCredential _credential;
+
+        public override Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> state)
+        {
+            if (parameter is PasswordCredential c)
+                _credential = c;
+            _credential?.RetrievePassword();
+            return base.OnNavigatedToAsync(parameter, mode, state);
+        }
+
         public string ServerUrl
         {
             get
             {
-                _serverUrl = Configuration.ServerUrl;
+                _serverUrl = _credential?.Resource;
                 return _serverUrl;
             }
             set
@@ -45,7 +57,7 @@ namespace OwncloudUniversal.ViewModels
         {
             get
             {
-                _userName = Configuration.UserName;
+                _userName = _credential?.UserName;
                 return _userName;
             }
             set { _userName = value; }
@@ -55,7 +67,7 @@ namespace OwncloudUniversal.ViewModels
         {
             get
             {
-                _password = Configuration.Password;
+                _password = _credential?.Password;
                 return _password;
             }
             set { _password = value; }
@@ -75,6 +87,7 @@ namespace OwncloudUniversal.ViewModels
 
         public WelcomePageViewModel()
         {
+            Shell.HamburgerMenu.IsFullScreen = true;
             ConnectCommand = new DelegateCommand(async () => await Connect());
         }
 
@@ -116,11 +129,10 @@ namespace OwncloudUniversal.ViewModels
                     var status = await client.CheckUserLoginAsync();
                     if (status == HttpStatusCode.Ok)
                     {
-                        Configuration.ServerUrl = OcsClient.GetWebDavUrl(_serverUrl);
-                        Configuration.Password = _password;
-                        Configuration.UserName = _userName;
+                        var cred = new UserAccountManager().AddAccount(OcsClient.GetWebDavUrl(_serverUrl), _userName, _password);
+                        Configuration.SelectedServer = cred;
                         Configuration.IsFirstRun = false;
-                        Shell.WelcomeDialog.IsModal = false;
+                        Shell.HamburgerMenu.IsFullScreen = false;
                         await NavigationService.NavigateAsync(typeof(FilesPage));
                     }
                     else

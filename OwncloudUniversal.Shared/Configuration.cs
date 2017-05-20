@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.Security.Credentials;
 using Windows.Storage;
+using Windows.Web.Http.Filters;
 
 namespace OwncloudUniversal.Shared
 {
@@ -13,44 +14,33 @@ namespace OwncloudUniversal.Shared
     {
         private static readonly Windows.Storage.ApplicationDataContainer Config = ApplicationData.Current.LocalSettings.CreateContainer(ContainerName, ApplicationDataCreateDisposition.Always);
 
-        private static string _password = "";
-        private static string _username = "";
-        private static string _serverUrl = "";
         private const string ContainerName = "ownCloud";
 
-        public static string ServerUrl
+        public static string ServerUrl => SelectedServer?.Resource;
+
+        public static string UserName => SelectedServer?.UserName;
+
+        public static string Password => SelectedServer?.Password;
+
+        public static PasswordCredential SelectedServer
         {
             get
             {
-                return GetCredentialFromLocker()?.Resource ?? String.Empty;
+                var manager = new UserAccountManager();
+                return manager.GetAccount((string) Config.Values["ServerUrl"], (string) Config.Values["UserName"]);
             }
             set
             {
-                _serverUrl = value;
-                AddCredentialToLocker();
-            } 
-        }
-
-        public static string UserName
-        {
-            get { return GetCredentialFromLocker()?.UserName ?? String.Empty; }
-            set
-            {
-                _username = value; 
-                AddCredentialToLocker();
+                Config.Values["ServerUrl"] = value.Resource;
+                Config.Values["UserName"] = value.UserName;
+                var filter = new HttpBaseProtocolFilter();
+                foreach (var cookie in filter.CookieManager.GetCookies(new Uri(value.Resource)))
+                {
+                    filter.CookieManager.DeleteCookie(cookie);
+                }
+                
             }
         }
-
-        public static string Password
-        {
-            get { return GetCredentialFromLocker()?.Password ?? String.Empty; }
-            set
-            {
-                _password = value;
-                AddCredentialToLocker();
-            }
-        }
-        
 
         public static long MaxDownloadSize
         {
@@ -76,46 +66,6 @@ namespace OwncloudUniversal.Shared
 
         public static NetworkCredential Credential => new NetworkCredential(UserName, Password);
 
-        private static PasswordCredential GetCredentialFromLocker()
-        {
-            PasswordCredential credential = null;
-
-            var vault = new PasswordVault();
-            var credentialList = vault.RetrieveAll();
-            if (credentialList.Count > 0)
-            {
-                if (credentialList.Count == 1)
-                {
-                    credential = credentialList[0];
-                }
-                else
-                {
-                    credential = vault.RetrieveAll().FirstOrDefault();
-                }
-                credential.RetrievePassword();
-            }
-
-            return credential;
-        }
-
-        private static void AddCredentialToLocker()
-        {
-            if (!(string.IsNullOrWhiteSpace(_username) || string.IsNullOrWhiteSpace(_password) || string.IsNullOrWhiteSpace(_serverUrl) ))
-            {
-                RemoveCredentials();
-                var credential = new PasswordCredential(_serverUrl, _username, _password);
-                var vault = new Windows.Security.Credentials.PasswordVault();
-                vault.Add(credential);
-            }
-        }
-
-        public static void RemoveCredentials()
-        {
-            if(GetCredentialFromLocker() == null) return;
-            var vault = new PasswordVault();
-            vault.Remove(GetCredentialFromLocker());
-        }
-
         /// <summary>
         /// Indicates wether the background task is enabled so it can be registered again after an app update
         /// </summary>
@@ -132,7 +82,13 @@ namespace OwncloudUniversal.Shared
 
         public static void Reset()
         {
+            //var manager = new UserAccountManager();
+            //foreach (var passwordCredential in manager.GetAllAccounts())
+            //{
+            //    manager.DeleteAccount(passwordCredential);
+            //}
             ApplicationData.Current.LocalSettings.DeleteContainer(ContainerName);
+            
         }
     }
 }

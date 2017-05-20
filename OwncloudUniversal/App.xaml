@@ -30,6 +30,7 @@
             <converters:BoolConverter x:Key="BoolConverter"/>
             <converters:EnumToResourceStringConverter x:Key="EnumToResourceStringConverter"/>
             <converters:DateTimeToDaysAgoConverter x:Key="DateTimeToDaysAgoConverter"/>
+            <converters:ServerUrlToDisplayNameConverter x:Key="ServerUrlToDisplayNameConverter"/>
 
             <t10Converters:ValueWhenConverter x:Key="VisibleInSingleModeConverter">
                 <t10Converters:ValueWhenConverter.When>

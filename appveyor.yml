@@ -17,7 +17,7 @@ before_build:
   
 artifacts:
   - path: Release\OwncloudUniversal\AppPackages
-  - name: OwncloudUniversal-Latest
+    name: OwncloudUniversal-Latest
   
 
 

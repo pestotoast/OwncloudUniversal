@@ -31,8 +31,8 @@ namespace OwncloudUniversal.ViewModels
             get { return Configuration.SelectedServer; }
             set
             {
-
-                Configuration.SelectedServer = value;
+                if(value != null)
+                    Configuration.SelectedServer = value;
                 WebDavNavigationService.Reset();
             }
         }

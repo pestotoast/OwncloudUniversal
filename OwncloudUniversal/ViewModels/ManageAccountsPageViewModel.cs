@@ -14,13 +14,15 @@ namespace OwncloudUniversal.ViewModels
 {
     class ManageAccountsPageViewModel : ViewModelBase
     {
-
+        private PasswordCredential _selectedAccount;
         public ManageAccountsPageViewModel()
         {
             AddAccountCommand = new DelegateCommand(async ()=> await NavigationService.NavigateAsync(typeof(WelcomePage)));
+            RemoveAccountCommand = new DelegateCommand(() => new UserAccountManager().DeleteAccount(SelectedServer));
         }
 
         public ICommand AddAccountCommand { get; private set; }
+        public ICommand RemoveAccountCommand { get; private set; }
 
         public List<PasswordCredential> Credentials
         {
@@ -33,11 +35,10 @@ namespace OwncloudUniversal.ViewModels
 
         public PasswordCredential SelectedServer
         {
-            get { return Configuration.SelectedServer; }
+            get { return _selectedAccount; }
             set
             {
-                Configuration.SelectedServer = value;
-                RaisePropertyChanged();
+                _selectedAccount = value;
             }
         }
     }

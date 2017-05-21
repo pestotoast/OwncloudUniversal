@@ -45,12 +45,16 @@ namespace OwncloudUniversal.Services
             return _instance;
         }
 
-        public static void Reset()
+        public static async void Reset()
         {
             if (_instance != null)
             {
-                _instance.Items = new List<DavItem>().ToObservableCollection();
-                _instance = null;
+                _instance.Items = new ObservableCollection<DavItem>();
+                _instance.BackStack = new ObservableCollection<DavItem>();
+                _instance.ForwardStack = new ObservableCollection<DavItem>();
+                _instance.CurrentItem = null;
+                await _instance.NavigateAsync(new DavItem { Href = Configuration.ServerUrl, IsCollection = true });
+                _navigationService.ClearHistory();
             }
         }
 

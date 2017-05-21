@@ -23,7 +23,7 @@
                              x:Uid="ManageAccountsPageHeader"
                              Frame="{x:Bind Frame}"
                              Grid.Row="0"/>
-        <ListView ItemsSource="{x:Bind ViewModel.Credentials}" Grid.Row="1">
+        <ListView ItemsSource="{x:Bind ViewModel.Credentials}" SelectedItem="{x:Bind ViewModel.SelectedServer, Mode=TwoWay}" Grid.Row="1">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <StackPanel>
@@ -37,6 +37,7 @@
             </ListView.ItemTemplate>
         </ListView>
         <CommandBar Grid.Row="2">
+            <AppBarButton Icon="Delete" Command="{x:Bind ViewModel.RemoveAccountCommand}"/>
             <AppBarButton Icon="Add" Command="{x:Bind ViewModel.AddAccountCommand}"/>
         </CommandBar>
     </Grid>

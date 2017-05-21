@@ -17,7 +17,7 @@
     <Page.DataContext>
         <viewModels:ShellPageViewModel x:Name="ViewModel" />
     </Page.DataContext>
-
+    
     <Grid>
         <Controls:HamburgerMenu x:Name="MyHamburgerMenu" 
                             VisualStateNarrowDisplayMode="Overlay" 
@@ -77,14 +77,36 @@
 
                 <Controls:HamburgerButtonInfo ButtonType="Command">
                     <StackPanel Orientation="Horizontal">
-                        <ListBox SelectedItem="{x:Bind ViewModel.SelectedServer, Mode=TwoWay}" ItemsSource="{x:Bind ViewModel.Credentials, Mode=OneWay}">
+                        <ListBox SelectedItem="{x:Bind ViewModel.SelectedAccount, Mode=TwoWay}" ItemsSource="{x:Bind ViewModel.Accounts, Mode=OneWay}" Background="Transparent">
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="{Binding UserName}"/>
-                                        <TextBlock Text="@"/>
-                                        <TextBlock Text="{Binding Resource, Converter={StaticResource ServerUrlToDisplayNameConverter}}"/>
-                                    </StackPanel>
+                                    <Grid Background="Transparent">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
+                                        <Grid Margin="0,0,0,0" Grid.Row="0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <TextBlock Text="&#xE13D;"  FontFamily="Segoe MDL2 Assets" FontSize="32" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="4" Grid.Column="0"/>
+                                            <Ellipse Width="48" Height="48" Grid.Column="0">
+                                                <Ellipse.Fill>
+                                                    <ImageBrush ImageSource="{Binding AvatarUrl}" />
+                                                </Ellipse.Fill>
+                                            </Ellipse>
+                                            <TextBlock Text="{Binding Credentials.UserName}" FontWeight="Bold" Grid.Column="1" HorizontalAlignment="Left" Margin="8,0,0,0" VerticalAlignment="Bottom"/>
+                                        </Grid>
+                                        <StackPanel Orientation="Horizontal" Grid.Row="1">
+
+                                            <TextBlock Text="{Binding Credentials.UserName}" Foreground="LightGray"/>
+                                            <TextBlock Text="@" Foreground="LightGray"/>
+                                            <TextBlock Text="{Binding Credentials.Resource, Converter={StaticResource ServerUrlToDisplayNameConverter}}" Foreground="LightGray" />
+                                        </StackPanel>
+                                    </Grid>
+
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
                         </ListBox>

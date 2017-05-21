@@ -108,10 +108,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="HttpRandomAccessStream.cs" />
+    <Compile Include="Model\Account.cs" />
     <Compile Include="Model\DavItem.cs" />
     <Compile Include="Model\WebDavUnauthorizedException.cs" />
     <Compile Include="OcsClient.cs" />
     <Compile Include="Model\ServerStatus.cs" />
+    <Compile Include="UserAccountManager.cs" />
     <Compile Include="XmlParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WebDavRequest.cs" />

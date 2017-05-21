@@ -6,6 +6,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.Data.Json;
+using Windows.Security.Credentials;
 using Newtonsoft.Json;
 using OwncloudUniversal.Shared;
 using OwncloudUniversal.WebDav.Model;
@@ -100,6 +101,14 @@ namespace OwncloudUniversal.WebDav
         {
             var statusUrl = _BuildStatusUrl(url);
             return statusUrl.ToString().Replace("status.php", "remote.php/webdav");
+        }
+
+        public async Task<Account> GetUserInfoAsync()
+        {
+            var acc = new Account();
+            acc.Credentials = new PasswordCredential(_serverUrl.ToString(), _credential.UserName, _credential.Password);
+            acc.AvatarUrl = _serverUrl.ToString().TrimEnd('/').Replace("remote.php/webdav", "index.php/avatar/") + _credential.UserName + "/" + 64;
+            return acc;
         }
     }
 }

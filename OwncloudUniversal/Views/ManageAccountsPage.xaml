@@ -23,14 +23,14 @@
                              x:Uid="ManageAccountsPageHeader"
                              Frame="{x:Bind Frame}"
                              Grid.Row="0"/>
-        <ListView ItemsSource="{x:Bind ViewModel.Credentials}" SelectedItem="{x:Bind ViewModel.SelectedServer, Mode=TwoWay}" Grid.Row="1">
+        <ListView ItemsSource="{x:Bind ViewModel.Accounts}" SelectedItem="{x:Bind ViewModel.SelectedAccount, Mode=TwoWay}" Grid.Row="1">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <StackPanel>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{Binding UserName}"/>
+                            <TextBlock Text="{Binding Credentials.UserName}"/>
                             <TextBlock Text="@"/>
-                            <TextBlock Text="{Binding Resource, Converter={StaticResource ServerUrlToDisplayNameConverter}}"/>
+                            <TextBlock Text="{Binding Credentials.Resource, Converter={StaticResource ServerUrlToDisplayNameConverter}}"/>
                         </StackPanel>
                     </StackPanel>
                 </DataTemplate>

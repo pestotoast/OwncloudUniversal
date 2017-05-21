@@ -12,27 +12,40 @@ using OwncloudUniversal.Services;
 using OwncloudUniversal.Shared;
 using OwncloudUniversal.Views;
 using Template10.Mvvm;
+using OwncloudUniversal.WebDav;
+using OwncloudUniversal.WebDav.Model;
 
 namespace OwncloudUniversal.ViewModels
 {
     class ShellPageViewModel : ViewModelBase
     {
-        public List<PasswordCredential> Credentials
+        private Account _selectedAccount;
+        private List<Account> _accounts;
+       
+        public override async Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> state)
         {
-            get
+            var userAccountManager = new UserAccountManager();
+            Accounts = await userAccountManager.GetAllAccountsAsync();
+            await base.OnNavigatedToAsync(parameter, mode, state);
+        }
+        
+        public List<Account> Accounts
+        {
+            get => _accounts;
+            set
             {
-                var manager = new UserAccountManager();
-                return manager.GetAllAccounts();
+                _accounts = value;
+                RaisePropertyChanged();
             }
         }
 
-        public PasswordCredential SelectedServer
+        public Account SelectedAccount
         {
-            get { return Configuration.SelectedServer; }
+            get => _selectedAccount;
             set
             {
-                if(value != null)
-                    Configuration.SelectedServer = value;
+                _selectedAccount = value;
+                Configuration.SelectedServer = _selectedAccount.Credentials;
                 WebDavNavigationService.Reset();
             }
         }

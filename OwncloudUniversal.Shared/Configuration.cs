@@ -26,8 +26,16 @@ namespace OwncloudUniversal.Shared
         {
             get
             {
-                var manager = new UserAccountManager();
-                return manager.GetAccount((string) Config.Values["ServerUrl"], (string) Config.Values["UserName"]);
+                var vault = new PasswordVault();
+                foreach (var passwordCredential in vault.RetrieveAll())
+                {
+                    if (passwordCredential.Resource == (string)Config.Values["ServerUrl"] && passwordCredential.UserName == (string)Config.Values["UserName"])
+                    {
+                        passwordCredential.RetrievePassword();
+                        return passwordCredential;
+                    }
+                }
+                return null;
             }
             set
             {

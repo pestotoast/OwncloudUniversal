@@ -7,6 +7,7 @@ using Template10.Services.NavigationService;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Navigation;
 using Template10.Mvvm;
 
 namespace OwncloudUniversal.Views
@@ -30,6 +31,7 @@ namespace OwncloudUniversal.Views
         public Shell(INavigationService navigationService) : this()
         {
             SetNavigationService(navigationService);
+            LoadAccounts();
         }
 
         public void SetNavigationService(INavigationService navigationService)
@@ -39,6 +41,11 @@ namespace OwncloudUniversal.Views
             HamburgerMenu.IsFullScreen = _settings.IsFullScreen;
             HamburgerMenu.HamburgerButtonVisibility = _settings.ShowHamburgerButton ? Visibility.Visible : Visibility.Collapsed;
             ViewModel.NavigationService = navigationService;
+        }
+
+        private async void LoadAccounts()
+        {
+            await ViewModel.OnNavigatedToAsync(null, NavigationMode.Refresh, null);
         }
     }
 }

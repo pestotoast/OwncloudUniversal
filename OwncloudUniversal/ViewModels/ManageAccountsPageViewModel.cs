@@ -9,37 +9,41 @@ using Windows.UI.Xaml.Navigation;
 using OwncloudUniversal.Shared;
 using OwncloudUniversal.Views;
 using Template10.Mvvm;
+using OwncloudUniversal.WebDav;
+using OwncloudUniversal.WebDav.Model;
 
 namespace OwncloudUniversal.ViewModels
 {
     class ManageAccountsPageViewModel : ViewModelBase
     {
-        private PasswordCredential _selectedAccount;
+        private List<Account> _accounts;
         public ManageAccountsPageViewModel()
         {
             AddAccountCommand = new DelegateCommand(async ()=> await NavigationService.NavigateAsync(typeof(WelcomePage)));
-            RemoveAccountCommand = new DelegateCommand(() => new UserAccountManager().DeleteAccount(SelectedServer));
+            RemoveAccountCommand = new DelegateCommand(() => new UserAccountManager().DeleteAccount(SelectedAccount));
         }
 
-        public ICommand AddAccountCommand { get; private set; }
-        public ICommand RemoveAccountCommand { get; private set; }
+        public ICommand AddAccountCommand { get; }
+        public ICommand RemoveAccountCommand { get; }
 
-        public List<PasswordCredential> Credentials
+        public override async Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> state)
         {
-            get
-            {
-                var manager = new UserAccountManager();
-                return manager.GetAllAccounts();
-            }
+            var userAccountManager = new UserAccountManager();
+            Accounts = await userAccountManager.GetAllAccountsAsync();
+            await base.OnNavigatedToAsync(parameter, mode, state);
         }
 
-        public PasswordCredential SelectedServer
+
+        public List<Account> Accounts
         {
-            get { return _selectedAccount; }
+            get => _accounts;
             set
             {
-                _selectedAccount = value;
+                _accounts = value;
+                RaisePropertyChanged();
             }
         }
+
+        public Account SelectedAccount { get; set; }
     }
 }

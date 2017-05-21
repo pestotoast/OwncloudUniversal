@@ -129,8 +129,8 @@ namespace OwncloudUniversal.ViewModels
                     var status = await client.CheckUserLoginAsync();
                     if (status == HttpStatusCode.Ok)
                     {
-                        var cred = new UserAccountManager().AddAccount(OcsClient.GetWebDavUrl(_serverUrl), _userName, _password);
-                        Configuration.SelectedServer = cred;
+                        var acc = await new UserAccountManager().AddAccountAsync(OcsClient.GetWebDavUrl(_serverUrl), _userName, _password);
+                        Configuration.SelectedServer = acc.Credentials;
                         Configuration.IsFirstRun = false;
                         Shell.HamburgerMenu.IsFullScreen = false;
                         await NavigationService.NavigateAsync(typeof(FilesPage));

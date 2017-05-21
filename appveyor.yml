@@ -17,5 +17,8 @@ build_script:
 before_build:
   - nuget restore OwncloudUniversal.sln
   
+artifacts:
+  - path: ..\Release\OwncloudUniversal\AppPackages\
+  
 
 

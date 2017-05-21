@@ -11,8 +11,10 @@ namespace OwncloudUniversal.WebDav.Model
     {
         public PasswordCredential Credentials { get; set; }
         public string DisplayName { get; set; }
-        public int TotalStorage { get; set; }
-        public int UsedStorage { get; set; }
+        public UInt64 TotalStorage { get; set; }
+        public UInt64 UsedStorage { get; set; }
+        public UInt64 FreeStorage { get; set; }
+        public double PercentUsed { get; set; }
         public string AvatarUrl { get; set; }
     }
 }

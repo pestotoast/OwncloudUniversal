@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -37,6 +38,23 @@ namespace OwncloudUniversal.WebDav
                 davItems.Add(davItem);
             }
             return davItems;
+        }
+
+        public static void ParseGetUser(Account account, Stream stream)
+        {
+            XDocument doc = XDocument.Load(stream);
+            Debug.WriteLine(doc);
+            var elements = from data in doc.Descendants(XName.Get("data")) select data;
+            foreach (var xElement in elements)
+            {
+                account.DisplayName = xElement.Element(XName.Get("displayname"))?.Value;//owncloud
+                if(account.DisplayName is null)
+                    account.DisplayName = xElement.Element(XName.Get("display-name"))?.Value;//nextcloud
+                account.TotalStorage = Convert.ToUInt64(xElement.Descendants(XName.Get("total")).FirstOrDefault()?.Value);
+                account.UsedStorage = Convert.ToUInt64(xElement.Descendants(XName.Get("used")).FirstOrDefault()?.Value);
+                account.FreeStorage = Convert.ToUInt64(xElement.Descendants(XName.Get("free")).FirstOrDefault()?.Value);
+                account.PercentUsed = Convert.ToDouble(xElement.Descendants(XName.Get("relative")).FirstOrDefault()?.Value, CultureInfo.InvariantCulture);
+            }
         }
     }
 }

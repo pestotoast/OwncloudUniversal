@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -41,6 +42,12 @@ namespace OwncloudUniversal.WebDav
                 {
                     var status = Newtonsoft.Json.JsonConvert.DeserializeObject<ServerStatus>(content);
                     status.ResponseCode = response.StatusCode.ToString();
+                    var version = status.Versionstring.Trim('.');
+                    //how can i properly check if its an ownCloud or a nextCloud Server???
+                    if (version.StartsWith("11") || version.StartsWith("12")) 
+                        status.Edition = "nextcloud";
+                    else
+                        status.Edition = "owncloud";
                     return status;
                 }
                 catch (JsonException)
@@ -81,6 +88,7 @@ namespace OwncloudUniversal.WebDav
             return null;
         }
 
+        
         public async Task<HttpStatusCode> CheckUserLoginAsync()
         {
             var url = GetWebDavUrl(_serverUrl.ToString());
@@ -106,8 +114,24 @@ namespace OwncloudUniversal.WebDav
         public async Task<Account> GetUserInfoAsync()
         {
             var acc = new Account();
+            var serverStatus = await GetServerStatusAsync(_serverUrl.ToString());
             acc.Credentials = new PasswordCredential(_serverUrl.ToString(), _credential.UserName, _credential.Password);
             acc.AvatarUrl = _serverUrl.ToString().TrimEnd('/').Replace("remote.php/webdav", "index.php/avatar/") + _credential.UserName + "/" + 64;
+            Uri uri;
+            if (serverStatus.Edition == "owncloud")
+            {
+                uri = new Uri(_serverUrl.ToString().Replace("remote.php/webdav", "ocs/v1.php/cloud/users") + "/" + _credential.UserName);
+            }
+            else
+            {
+                uri = new Uri(_serverUrl.ToString().Replace("remote.php/webdav", "ocs/v1.php/cloud/user"));
+            }
+
+            var headers = new Dictionary<string, string> { { "OCS-APIRequest", "true" } };
+            var request = new WebDavRequest(new NetworkCredential(_credential.UserName, _credential.Password), uri, HttpMethod.Get, null, headers);
+            var response = await request.SendAsync();
+            var stream = await response.Content.ReadAsInputStreamAsync();
+            XmlParser.ParseGetUser(acc, stream.AsStreamForRead());
             return acc;
         }
     }

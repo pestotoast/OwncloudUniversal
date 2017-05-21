@@ -16,7 +16,7 @@ before_build:
   - nuget restore OwncloudUniversal.sln
   
 artifacts:
-  - path: Release\OwncloudUniversal\AppPackages\
+  - path: Release\OwncloudUniversal\AppPackages
   - name: OwncloudUniversal-Latest
   
 

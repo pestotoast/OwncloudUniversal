@@ -242,10 +242,12 @@ namespace OwncloudUniversal.Shared.LocalFileSystem
             var existingItems = ItemTableModel.GetDefault().GetFilesForFolder(association, this.GetType());
             sItems.AddRange(await queryTask);
 
-            var missingItems = (from baseItem in existingItems
-                from storageItem in sItems.Where(item => item.Path == baseItem.EntityId).DefaultIfEmpty()
-                select new {BaseItem = baseItem, IStorageItem = storageItem}).Where(item => item.IStorageItem == null).Select(i=>i.BaseItem);
-
+            var storageItems = new List<BaseItem>();
+            foreach (var storageItem in sItems)
+            {
+                storageItems.Add(new BaseItem{EntityId = storageItem.Path});
+            }
+            var missingItems = existingItems.Except(storageItems, new EnityIdComparer());
 
             foreach (var missingItem in missingItems)
             {

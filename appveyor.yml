@@ -10,7 +10,7 @@ install:
   - ps: .appveyor/install-vsix.ps1
   
 build_script:
-  - MSBuild "C:\projects\ownclouduniversal\src\OwncloudUniversal.sln" /t:Build /p:Configuration=Release;Platform="ARM";OutDir="C:\projects\ownclouduniversal\Release";AppxBundle=Always;AppxBundlePlatforms="x86|x64|ARM" /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
+  - MSBuild "C:\projects\ownclouduniversal\src\OwncloudUniversal.sln" /t:Build /p:Configuration=Release;Platform="ARM";OutDir="C:\projects\ownclouduniversal\Release";AppxBundle=Always;AppxBundlePlatforms="x86|x64|ARM"ReferencePath=%USERPROFILE%\.nuget\packages\SQLitePCL\3.8.7.2\build\netcore451 /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
   
 before_build:
   - nuget restore src/OwncloudUniversal.sln

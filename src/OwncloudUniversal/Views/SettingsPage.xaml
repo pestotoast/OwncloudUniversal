@@ -144,7 +144,7 @@
                                                x:Uid="Publisher"
                                                RelativePanel.AlignLeftWithPanel="True"
                                                RelativePanel.Below="DisplayNameTextBlock"
-                                               Text="{Binding Publisher}" />
+                                               Text="ownCloud Community" />
 
                     <toolkit:HeaderedTextBlock x:Name="VersionTextBlock"
                                                x:Uid="Version"

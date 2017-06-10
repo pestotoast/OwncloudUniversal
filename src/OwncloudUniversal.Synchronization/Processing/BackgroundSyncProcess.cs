@@ -136,6 +136,11 @@ namespace OwncloudUniversal.Synchronization.Synchronisation
                                 }
                             }
                             ItemTableModel.GetDefault().DeleteItem(linkedItem.Id);
+                            var historyEntry = new SyncHistoryEntry();
+                            historyEntry.CreateDate = DateTime.Now;
+                            historyEntry.Result = SyncResult.Deleted;
+                            historyEntry.OldItemDisplayName = item.DisplayName;
+                            SyncHistoryTableModel.GetDefault().InsertItem(historyEntry);
                         }
                     }
 
@@ -252,6 +257,12 @@ namespace OwncloudUniversal.Synchronization.Synchronisation
                 }
                 catch (Exception e)
                 {
+                    var historyEntry = new SyncHistoryEntry();
+                    historyEntry.CreateDate = DateTime.Now;
+                    historyEntry.SourceItemId = item.BaseItem.Id;
+                    historyEntry.Result = SyncResult.Failed;
+                    historyEntry.Message = e.Message;
+                    SyncHistoryTableModel.GetDefault().InsertItem(historyEntry);
                     ToastHelper.SendToast(string.Format("Message: {0}, EntitityId: {1}", e.Message, item.BaseItem.EntityId));
                     await
                         LogHelper.Write(string.Format("Message: {0}, EntitityId: {1} StackTrace:\r\n{2}", e.Message,
@@ -407,6 +418,15 @@ namespace OwncloudUniversal.Synchronization.Synchronisation
                 var link = new LinkStatus(sourceItem, targetItem);
                 LinkStatusTableModel.GetDefault().InsertItem(link);
             }
+
+            var historyEntry = new SyncHistoryEntry();
+            historyEntry.CreateDate = DateTime.Now;
+            historyEntry.SourceItemId = sourceItem.Id;
+            historyEntry.TargetItemId = targetItem.Id;
+            historyEntry.Result = sourceItem.AdapterType == _sourceEntityAdapter.GetType()
+                ? SyncResult.Sent
+                : SyncResult.Received;
+            SyncHistoryTableModel.GetDefault().InsertItem(historyEntry);
         }
 
         private void AfterUpdate(BaseItem sourceItem, BaseItem targetItem)
@@ -423,6 +443,14 @@ namespace OwncloudUniversal.Synchronization.Synchronisation
                 ItemTableModel.GetDefault().UpdateItem(sourceItem, sourceItem.Id);
                 ItemTableModel.GetDefault().UpdateItem(targetItem, targetItem.Id);
             }
+            var historyEntry = new SyncHistoryEntry();
+            historyEntry.CreateDate = DateTime.Now;
+            historyEntry.SourceItemId = sourceItem.Id;
+            historyEntry.TargetItemId = targetItem.Id;
+            historyEntry.Result = sourceItem.AdapterType == _sourceEntityAdapter.GetType()
+                ? SyncResult.Sent
+                : SyncResult.Received;
+            SyncHistoryTableModel.GetDefault().InsertItem(historyEntry);
         }
 
         private async Task SetExecutionStatus(ExecutionStatus status)

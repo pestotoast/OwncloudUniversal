@@ -50,6 +50,11 @@ namespace OwncloudUniversal.Services
         {
             _navigationService = service;
             _navigationService.FrameFacade.Navigated += FrameFacadeOnNavigating;
+            _navigationService.Frame.Navigating += (sender, args) =>
+            {
+                if (args.NavigationMode == NavigationMode.Forward)
+                    args.Cancel = true;
+            };
         }
 
         private async void FrameFacadeOnNavigating(object sender, NavigatedEventArgs args)

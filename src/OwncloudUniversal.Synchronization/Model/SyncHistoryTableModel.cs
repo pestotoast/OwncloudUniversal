@@ -9,6 +9,20 @@ namespace OwncloudUniversal.Synchronization.Model
 {
     class SyncHistoryTableModel : AbstractTableModelBase<SyncHistoryEntry, long>
     {
+        private SyncHistoryTableModel() { }
+
+        private static SyncHistoryTableModel instance;
+
+        public static SyncHistoryTableModel GetDefault()
+        {
+            lock (typeof(SyncHistoryTableModel))
+            {
+                if (instance == null)
+                    instance = new SyncHistoryTableModel();
+                return instance;
+            }
+        }
+
         protected override SyncHistoryEntry CreateInstance(ISQLiteStatement query)
         {
             var entry = new SyncHistoryEntry();
@@ -35,7 +49,7 @@ namespace OwncloudUniversal.Synchronization.Model
 
         protected override void BindSelectItemQuery(ISQLiteStatement query, long key)
         {
-            query.Bind("Id", key);
+            query.Bind(1, key);
         }
 
         protected override void BindSelectItemQuery(ISQLiteStatement query, string itemId)
@@ -51,12 +65,12 @@ namespace OwncloudUniversal.Synchronization.Model
 
         protected override void BindInsertItemQuery(ISQLiteStatement query, SyncHistoryEntry item)
         {
-            query.Bind(nameof(item.CreateDate), item.CreateDate);
-            query.Bind(nameof(item.Message), item.Message);
-            query.Bind(nameof(item.Result), item.Result);
-            query.Bind(nameof(item.SourceItemId), item.SourceItemId);
-            query.Bind(nameof(item.TargetItemId), item.TargetItemId);
-
+            query.Bind(1, SQLite.DateTimeHelper.DateTimeSQLite(item.CreateDate));
+            query.Bind(2, item.Message);
+            query.Bind(3, item.Result.ToString());
+            query.Bind(4, item.SourceItemId);
+            query.Bind(5, item.TargetItemId);
+            query.Bind(6, item.OldItemDisplayName);
         }
 
         protected override string GetUpdateItemQuery()
@@ -67,12 +81,13 @@ namespace OwncloudUniversal.Synchronization.Model
 
         protected override void BindUpdateItemQuery(ISQLiteStatement query, SyncHistoryEntry item, long key)
         {
-            query.Bind(nameof(item.Id), key);
-            query.Bind(nameof(item.CreateDate), item.CreateDate);
-            query.Bind(nameof(item.Message), item.Message);
-            query.Bind(nameof(item.Result), item.Result);
-            query.Bind(nameof(item.SourceItemId), item.SourceItemId);
-            query.Bind(nameof(item.TargetItemId), item.TargetItemId);
+            query.Bind(1, key);
+            query.Bind(2, SQLite.DateTimeHelper.DateTimeSQLite(item.CreateDate));
+            query.Bind(3, item.Message);
+            query.Bind(4, item.Result.ToString());
+            query.Bind(6, item.SourceItemId);
+            query.Bind(7, item.TargetItemId);
+            query.Bind(8, item.OldItemDisplayName);
         }
 
         protected override string GetDeleteItemQuery()
@@ -82,7 +97,7 @@ namespace OwncloudUniversal.Synchronization.Model
 
         protected override void BindDeleteItemQuery(ISQLiteStatement query, long key)
         {
-            query.Bind("Id", key);
+            query.Bind(1, key);
         }
 
         protected override string GetSelectAllQuery()

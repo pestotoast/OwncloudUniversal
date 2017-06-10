@@ -10,6 +10,9 @@ namespace OwncloudUniversal.Synchronization.Model
     {
         Sent,
         Received,
+        Deleted,
+        Moved,
+        Renamed,
         Ignored,
         Failed
     }

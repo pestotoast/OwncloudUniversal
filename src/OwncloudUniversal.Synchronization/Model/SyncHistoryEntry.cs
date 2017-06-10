@@ -14,5 +14,6 @@ namespace OwncloudUniversal.Synchronization.Model
         public DateTime CreateDate { get; set; }
         public SyncResult Result { get; set; }
         public string Message { get; set; }
+        public string OldItemDisplayName { get; set; }//the name to display if an item was deleted
     }
 }

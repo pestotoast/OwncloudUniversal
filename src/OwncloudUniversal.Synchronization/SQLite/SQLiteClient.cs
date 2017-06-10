@@ -61,7 +61,8 @@ namespace OwncloudUniversal.Synchronization.SQLite
                         [SourceItemId] INTEGER  NULL,
                         [CreateDate] NVARCHAR(32),
                         [Result] NVARCHAR(32),
-                        [Message] TEXT
+                        [Message] TEXT,
+                        [OldItemDisplayName] TEXT
                     );";
             using (var statement = Connection.Prepare(query))
             {

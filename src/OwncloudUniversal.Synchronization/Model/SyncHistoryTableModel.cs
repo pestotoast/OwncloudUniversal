@@ -23,13 +23,14 @@ namespace OwncloudUniversal.Synchronization.Model
             entry.Result = result;
             entry.SourceItemId = (long) query["SourceItemId"];
             entry.TargetItemId = (long)query["TargetItemId"];
+            entry.OldItemDisplayName = (string) query["OldItemDisplayName"];
             return entry;
         }
 
         protected override string GetSelectItemQuery()
         {
             return
-                "SELECT Id, CreateDate, Message, Result, SourceItemId, TargetItemId From SyncHistory where Id = @Id";
+                "SELECT Id, CreateDate, Message, Result, SourceItemId, TargetItemId, OldItemDisplayName From SyncHistory where Id = @Id";
         }
 
         protected override void BindSelectItemQuery(ISQLiteStatement query, long key)
@@ -45,7 +46,7 @@ namespace OwncloudUniversal.Synchronization.Model
         protected override string GetInsertItemQuery()
         {
             return
-                "INSERT INTO SyncHistory (CreateDate, Message, Result, SourceItemId, TargetItemId) VALUES (@CreateDate, @Message, @Result, @SourceItemId, @TargetItemId)";
+                "INSERT INTO SyncHistory (CreateDate, Message, Result, SourceItemId, TargetItemId, OldItemDisplayName) VALUES (@CreateDate, @Message, @Result, @SourceItemId, @TargetItemId, @OldItemDisplayName)";
         }
 
         protected override void BindInsertItemQuery(ISQLiteStatement query, SyncHistoryEntry item)
@@ -61,7 +62,7 @@ namespace OwncloudUniversal.Synchronization.Model
         protected override string GetUpdateItemQuery()
         {
             return
-                "UPDATE SyncHistory SET CreateDate = @CreateDate, Message = @Message, Result = @Result, SourceItemId = @SourceItemId, TargetItemId = @TargetItemId where Id = @Id";
+                "UPDATE SyncHistory SET CreateDate = @CreateDate, Message = @Message, Result = @Result, SourceItemId = @SourceItemId, TargetItemId = @TargetItemId, OldItemDisplayName = @OldItemDisplayName where Id = @Id";
         }
 
         protected override void BindUpdateItemQuery(ISQLiteStatement query, SyncHistoryEntry item, long key)
@@ -76,7 +77,7 @@ namespace OwncloudUniversal.Synchronization.Model
 
         protected override string GetDeleteItemQuery()
         {
-            return "DELTE FROM SyncHistory Where Id = @Id";
+            return "DELETE FROM SyncHistory Where Id = @Id";
         }
 
         protected override void BindDeleteItemQuery(ISQLiteStatement query, long key)
@@ -87,7 +88,7 @@ namespace OwncloudUniversal.Synchronization.Model
         protected override string GetSelectAllQuery()
         {
             return
-                "SELECT Id, CreateDate, Message, Result, SourceItemId, TargetItemId From SyncHistory";
+                "SELECT Id, CreateDate, Message, Result, SourceItemId, TargetItemId, OldItemDisplayName From SyncHistory";
         }
 
         protected override void BindSelectAllQuery(ISQLiteStatement query)

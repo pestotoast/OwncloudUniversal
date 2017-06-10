@@ -55,6 +55,19 @@ namespace OwncloudUniversal.Synchronization.SQLite
                 statement.Step();
             }
 
+            query = @"CREATE TABLE IF NOT EXISTS [SyncHistory] (
+                        [Id] INTEGER  PRIMARY KEY AUTOINCREMENT NOT NULL,
+                        [TargetItemId] INTEGER  NULL,
+                        [SourceItemId] INTEGER  NULL,
+                        [CreateDate] NVARCHAR(32),
+                        [Result] NVARCHAR(32),
+                        [Message] TEXT
+                    );";
+            using (var statement = Connection.Prepare(query))
+            {
+                statement.Step();
+            }
+
             //activate foreign keys?
             query = "PRAGMA foreign_keys = ON";
             using (var statement = Connection.Prepare(query))

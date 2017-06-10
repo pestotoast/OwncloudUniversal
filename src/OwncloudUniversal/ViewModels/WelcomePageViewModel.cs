@@ -8,6 +8,7 @@ using System.Windows.Input;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Navigation;
 using OwncloudUniversal.Services;
 using OwncloudUniversal.Synchronization;
 using OwncloudUniversal.Views;
@@ -38,7 +39,7 @@ namespace OwncloudUniversal.ViewModels
             set
             {
                 _serverUrl = value;
-                var task = CheckServerStatus();
+                CheckServerStatus();
             }
         }
 
@@ -77,6 +78,12 @@ namespace OwncloudUniversal.ViewModels
         public WelcomePageViewModel()
         {
             ConnectCommand = new DelegateCommand(async () => await Connect());
+        }
+
+        public override Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> state)
+        {
+            Shell.HamburgerMenu.IsFullScreen = true;
+            return Task.CompletedTask;
         }
 
         private async Task CheckServerStatus()
@@ -120,8 +127,9 @@ namespace OwncloudUniversal.ViewModels
                         Configuration.Password = _password;
                         Configuration.UserName = _userName;
                         Configuration.IsFirstRun = false;
-                        Shell.WelcomeDialog.IsModal = false;
+                        Shell.HamburgerMenu.IsFullScreen = false;
                         await NavigationService.NavigateAsync(typeof(FilesPage));
+                        NavigationService.ClearHistory();
                     }
                     else
                     {

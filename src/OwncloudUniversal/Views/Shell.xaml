@@ -108,12 +108,6 @@
 
         </Controls:HamburgerMenu>
 
-        <Controls:ModalDialog x:Name="WelcomePage">
-            <Controls:ModalDialog.ModalContent>
-                <views:WelcomePage/>
-            </Controls:ModalDialog.ModalContent>
-        </Controls:ModalDialog>
-
         <Controls:ModalDialog  x:Name="ProgressRing" ModalBackground="Transparent">
             <Controls:ModalDialog.ModalContent>
                 <ProgressRing IsActive="True" Foreground="{ThemeResource ContrastColorBrush}"
@@ -123,9 +117,6 @@
                       MinHeight="80"/>
             </Controls:ModalDialog.ModalContent>
         </Controls:ModalDialog>
-            
-        
-        
     </Grid>
 </Page>
 

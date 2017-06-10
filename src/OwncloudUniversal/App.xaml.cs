@@ -76,11 +76,11 @@ namespace OwncloudUniversal
                 {
                     Configuration.RemoveCredentials();
                     Configuration.IsBackgroundTaskEnabled = false;
-                    Shell.WelcomeDialog.IsModal = true;
+                    NavigationService.Navigate(typeof(WelcomePage));
                 }
                 else
                 {
-                    var task = NavigationService.NavigateAsync(typeof(FilesPage));
+                    NavigationService.Navigate(typeof(FilesPage));
                 }
 
                 if (Configuration.IsBackgroundTaskEnabled)

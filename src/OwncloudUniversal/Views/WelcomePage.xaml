@@ -35,7 +35,7 @@
                     </TextBox.HeaderTemplate>
                 </TextBox>
                 <PasswordBox Margin="0,10,0,0" Password="{Binding Password, Mode=TwoWay}"
-                             MaxWidth="400">
+                             MaxWidth="400" >
                     <PasswordBox.HeaderTemplate>
                         <DataTemplate>
                             <TextBlock x:Uid="PasswordHeader" Foreground="{ThemeResource CustomColorContrastBrush}"/>

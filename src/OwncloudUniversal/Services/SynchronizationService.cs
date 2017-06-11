@@ -74,20 +74,34 @@ namespace OwncloudUniversal.Services
                     DisplayRequest displayRequest = null;
                     try
                     {
-                        await Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-                        {
-                            displayRequest = new DisplayRequest();
-                            displayRequest.RequestActive();
-                        });
+                        await Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(
+                            CoreDispatcherPriority.Normal, () =>
+                            {
+                                displayRequest = new DisplayRequest();
+                                displayRequest.RequestActive();
+                            });
                         _Initialize();
                         await _worker.Run();
                     }
+                    catch (Exception e)
+                    {
+                        if (Windows.ApplicationModel.Core.CoreApplication.Views.Count > 0)
+                        {
+                            await Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                            {
+                                ExecutionContext.Instance.Status = ExecutionStatus.Error;
+                            });
+                        }
+                        await LogHelper.Write(e.Message);
+                        await LogHelper.Write(e.StackTrace);
+                    }
                     finally
                     {
-                        await Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-                        {
-                            displayRequest?.RequestRelease();
-                        });
+                        await Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(
+                            CoreDispatcherPriority.Normal, () =>
+                            {
+                                displayRequest?.RequestRelease();
+                            });
                     }
                 });
             }

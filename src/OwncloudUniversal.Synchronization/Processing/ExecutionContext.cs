@@ -84,7 +84,7 @@ namespace OwncloudUniversal.Synchronization.Synchronisation
             }
         }
 
-        public bool IsActive => !(Status == ExecutionStatus.Finished || Status == ExecutionStatus.Ready || Status == ExecutionStatus.Stopped);
+        public bool IsActive => !(Status == ExecutionStatus.Finished || Status == ExecutionStatus.Ready || Status == ExecutionStatus.Stopped || Status == ExecutionStatus.Error);
 
         public bool ShowProgress => Status == ExecutionStatus.Sending || Status == ExecutionStatus.Receiving;
 

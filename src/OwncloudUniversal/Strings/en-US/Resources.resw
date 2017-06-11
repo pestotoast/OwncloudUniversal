@@ -554,4 +554,7 @@ Check it out at https://owncloud.org
 Problems?
 Open a new issue on https://github.com/owncloud/OwncloudUniversal/issues or use the diagnostic report function inside the app.</value>
   </data>
+  <data name="Error" xml:space="preserve">
+    <value>Unknown error, please check the log file</value>
+  </data>
 </root>

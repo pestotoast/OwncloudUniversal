@@ -17,6 +17,7 @@ namespace OwncloudUniversal.Synchronization.Synchronisation
         UpdatingIndex =6,
         Ready = 7,
         Sending = 8,
-        Receiving = 9
+        Receiving = 9,
+        Error = 10
     }
 }

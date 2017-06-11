@@ -286,7 +286,7 @@ namespace OwncloudUniversal.Synchronization.LocalFileSystem
             var relativefileUri = item.EntityId.Replace(remoteFolder.EntityId, "");
             string path = Uri.UnescapeDataString(relativefileUri.ToString().Replace('/', '\\'));
             var result = folderUri.LocalPath + '\\' + path;
-            return result;
+            return result.TrimEnd('\\');
         }
 
     }

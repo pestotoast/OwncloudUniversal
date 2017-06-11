@@ -60,7 +60,7 @@ namespace OwncloudUniversal.Synchronization.Model
 
         protected override string GetSelectAllQuery()
         {
-            return "SELECT Id, AssociationId, EntityId, IsCollection, ChangeKey, ChangeNumber, SyncPostponed, AdapterType, LastModified FROM Item";
+            return "SELECT Id, AssociationId, EntityId, IsCollection, ChangeKey, ChangeNumber, SyncPostponed, AdapterType, LastModified FROM Item ORDER BY EntityId ASC";
         }
 
         protected override string GetSelectByEntityIdQuery()
@@ -177,7 +177,7 @@ namespace OwncloudUniversal.Synchronization.Model
         {
             var items = new ObservableCollection<BaseItem>();
             using (var query = Connection.Prepare("select i.Id, i.AssociationId, i.EntityId, i.IsCollection, i.ChangeKey, i.ChangeNumber, i.SyncPostponed, AdapterType, LastModified from Item i " +
-                                                  $"where i.AssociationId = '{association.Id}' AND i.AdapterType = '{adapterType.AssemblyQualifiedName}'"))
+                                                  $"where i.AssociationId = '{association.Id}' AND i.AdapterType = '{adapterType.AssemblyQualifiedName}' ORDER BY EntityId ASC"))
             {
                 while (query.Step() == SQLiteResult.ROW)
                 {
@@ -192,7 +192,8 @@ namespace OwncloudUniversal.Synchronization.Model
         {
             var items = new ObservableCollection<BaseItem>();
             using (var query = Connection.Prepare("select i.Id, i.AssociationId, i.EntityId, i.IsCollection, i.ChangeKey, i.ChangeNumber, i.SyncPostponed, AdapterType, LastModified from Item i " +
-                                                  $"where i.EntityId like '{folderPath}%' COLLATE NOCASE"))
+                                                  $"where i.EntityId like '{folderPath}%'  ORDER BY EntityId " +
+                                                  $"COLLATE NOCASE"))
             {
                 while (query.Step() == SQLiteResult.ROW)
                 {

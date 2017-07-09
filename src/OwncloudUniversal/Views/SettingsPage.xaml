@@ -121,7 +121,7 @@
                 <StackPanel>
                     <ToggleSwitch Header="Upload new Images" IsOn="{x:Bind CameraUploadPageViewModel.Enabled, Mode=TwoWay}"/>
                     <ToggleSwitch x:Name="AllowMeteredSwitch" Header="Allow metered connections" IsEnabled="{x:Bind CameraUploadPageViewModel.Enabled, Mode=OneWay}"/>
-                    <toolkit:HeaderedTextBlock Header="Target folder" Text="Tap here to select a folder" IsEnabled="{x:Bind CameraUploadPageViewModel.Enabled, Mode=OneWay}"/>
+                    <toolkit:HeaderedTextBlock Header="Target folder" Text="Please select a target folder" IsEnabled="{x:Bind CameraUploadPageViewModel.Enabled, Mode=OneWay}"/>
                     <ToggleSwitch Header="Upload videos" IsEnabled="{x:Bind CameraUploadPageViewModel.Enabled, Mode=OneWay}"/>
                 </StackPanel>
             </PivotItem>

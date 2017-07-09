@@ -19,9 +19,11 @@ namespace OwncloudUniversal.Views
         {
             if (e.Parameter != null)
             {
-                var index = int.Parse(_SerializationService.Deserialize(e.Parameter?.ToString()).ToString());
-                MyPivot.SelectedIndex = index;
-
+                if (e.Parameter is int)
+                {
+                    var index = int.Parse(_SerializationService.Deserialize(e.Parameter?.ToString()).ToString());
+                    MyPivot.SelectedIndex = index;
+                }
             }
         }
     }

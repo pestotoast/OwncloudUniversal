@@ -102,7 +102,7 @@ namespace OwncloudUniversal.ViewModels
         {
             MessageDialog areYouSure = new MessageDialog(App.ResourceLoader.GetString("ResetQuestion"));
             areYouSure.Commands.Add(new UICommand(App.ResourceLoader.GetString("yes"), null, "YES"));
-            areYouSure.Commands.Add(new UICommand(App.ResourceLoader.GetString("yes"), null, "NO"));
+            areYouSure.Commands.Add(new UICommand(App.ResourceLoader.GetString("no"), null, "NO"));
             var result = await areYouSure.ShowAsync();
             if (result.Id.ToString() == "YES")
             {

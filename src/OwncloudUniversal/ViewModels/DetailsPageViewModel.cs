@@ -30,6 +30,7 @@ namespace OwncloudUniversal.ViewModels
 
         public override Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> state)
         {
+            Windows.UI.Core.SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = Windows.UI.Core.AppViewBackButtonVisibility.Visible;
             var item = parameter as BaseItem;
             if (item != null)
                 Item = (DavItem)item;

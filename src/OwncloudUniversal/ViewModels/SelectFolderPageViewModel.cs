@@ -59,6 +59,7 @@ namespace OwncloudUniversal.ViewModels
         }
         public override async Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> state)
         {
+            Windows.UI.Core.SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = Windows.UI.Core.AppViewBackButtonVisibility.Visible;
             WebDavNavigationService = await WebDavNavigationService.InintializeAsync();
             WebDavNavigationService.PropertyChanged += WebDavNavigationServiceOnPropertyChanged;
             //items should be moved

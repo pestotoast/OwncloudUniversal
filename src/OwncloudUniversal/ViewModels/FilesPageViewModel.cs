@@ -128,6 +128,7 @@ namespace OwncloudUniversal.ViewModels
         public override async Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> state)
         {
             await base.OnNavigatedToAsync(parameter, mode, state);
+            Windows.UI.Core.SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = Windows.UI.Core.AppViewBackButtonVisibility.Visible;
             WebDavNavigationService = await WebDavNavigationService.InintializeAsync();
             WebDavNavigationService.PropertyChanged += WebDavNavigationServiceOnPropertyChanged;
             await Task.Run(() => LoadThumbnails());

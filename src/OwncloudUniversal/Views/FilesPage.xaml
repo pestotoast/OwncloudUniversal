@@ -70,7 +70,9 @@
                     <AppBarButton Width="20" Icon="Home" Command="{Binding HomeCommand}" HorizontalContentAlignment="Center" Foreground="White"/>
                     <ListBox HorizontalAlignment="Stretch" 
                              ItemsSource="{Binding WebDavNavigationService.BackStack}" 
-                             SelectedItem="{Binding SelectedItem, Mode=TwoWay}" 
+                             SelectedItem="{x:Bind FilesPageViewModel.SelectedItem, Mode=TwoWay}" 
+                             SelectionChanged="ListView_SelectionChanged"
+                             SelectedIndex="{x:Bind FilesPageViewModel.SelectedIndex, Mode=OneWay}"
                              SelectionMode="Single">
                         <ListBox.ItemContainerStyle>
                             <Style TargetType="ListBoxItem">
@@ -101,7 +103,7 @@
                         </ListBox.Template>
                         <ListBox.ItemTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding DisplayName}" VerticalAlignment="Center" Foreground="White"/>
+                                <TextBlock Text="{Binding DisplayName, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Foreground="White"/>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>

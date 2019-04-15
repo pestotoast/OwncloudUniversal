@@ -176,7 +176,6 @@ namespace OwncloudUniversal.ViewModels
                 if (value != null && SelectionMode == ListViewSelectionMode.Single)
                 {
                     _selectedItem = value;
-                    RaisePropertyChanged();
                     if (value.IsCollection)
                     {
                         var t = WebDavNavigationService.NavigateAsync(value);
@@ -191,10 +190,11 @@ namespace OwncloudUniversal.ViewModels
                     {
                         var task = OpenFileAsync(value);
                     }
+                    RaisePropertyChanged();
                 }
             } 
         }
-
+        
         public ListViewSelectionMode SelectionMode
         {
             get { return _selectionMode; }
@@ -202,6 +202,14 @@ namespace OwncloudUniversal.ViewModels
             {
                 _selectionMode = value;
                 RaisePropertyChanged();
+            }
+        }
+
+        public int SelectedIndex
+        {
+            get
+            {
+                return WebDavNavigationService?.Items?.IndexOf(WebDavNavigationService.CurrentItem) ?? -1;
             }
         }
 
